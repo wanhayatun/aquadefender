@@ -1,107 +1,60 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'homepage.dart'; // Import HomePage.dart
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'project',
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SplashScreen(), // Set SplashScreen as the home
+      home: const LandingPage(),
     );
   }
 }
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class LandingPage extends StatelessWidget {
+  const LandingPage({Key? key}) : super(key: key);
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    // Add a delay to simulate a splash screen
+  Widget build(BuildContext context) {
     Timer(const Duration(seconds: 2), () {
-      // Navigate to the main page after the delay
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => const MyHomePage(title: 'AquaDefender'),
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          transitionDuration:
+              const Duration(milliseconds: 1000), // Durasi transisi
+          pageBuilder: (_, __, ___) => HomePage(), // Ganti dengan HomePage
+          transitionsBuilder: (_, animation, __, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
         ),
       );
     });
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Change background color as needed
-      body: Center(
-        child: Image.asset(
-          'assets/logo.png', // Change this to the path of your image
-          //width: 200, // Adjust width as needed
-          height: 200, // Adjust height as needed
-      ),
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.show_chart),
+      body: Stack(
+        fit: StackFit.expand, // Gambar akan mengisi seluruh ruang layar
+        children: [
+          Image.asset(
+            'assets/landing_page.png', // Ganti dengan path gambar Anda
+            fit: BoxFit.cover, // Penyesuaian gambar dengan ukuran layar
+          ),
+          // Tambahkan konten di atas gambar jika diperlukan
+        ],
       ),
     );
   }
