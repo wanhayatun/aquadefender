@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kdgaugeview/kdgaugeview.dart';
 import 'package:vertical_percent_indicator/vertical_percent_indicator.dart';
 import 'homepage.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class DetailTitik2 extends StatelessWidget {
   const DetailTitik2({Key? key}) : super(key: key);
@@ -27,7 +27,7 @@ class DetailTitik2 extends StatelessWidget {
               Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(right: 150),
+                    padding: const EdgeInsets.only(right: 130),
                     child: Row(
                       children: [
                         Image.asset(
@@ -74,21 +74,25 @@ class DetailTitik2 extends StatelessWidget {
                   Container(
                     width: 280,
                     height: 280,
-                    padding: EdgeInsets.all(15),
-                    child: KdGaugeView(
-                      minSpeed: 0,
-                      maxSpeed: 100,
-                      speed: 50,
-                      animate: true,
-                      duration: Duration(seconds: 3),
-                      alertSpeedArray: [20, 50, 80],
-                      alertColorArray: [
-                        Colors.green,
-                        Colors.orange,
-                        Colors.red
-                      ],
-                      unitOfMeasurement: "m/s2",
-                    ),
+                    child: SfRadialGauge(
+                              axes: <RadialAxis>[
+                                RadialAxis(
+                                  maximum: 100,
+                                  interval: 25,
+                                  pointers: <GaugePointer>[
+                                    NeedlePointer(
+                                      value: 50,
+                                      needleEndWidth: 5,
+                                      )
+                                  ],
+                                  labelsPosition: ElementsPosition.outside,
+                                  ranges: <GaugeRange>[
+                                    GaugeRange(startValue: 0, endValue: 100, color: Colors.blue,)
+                                  ],
+                                  
+                                )
+                              ],
+                              ),
                   ),
                   VerticalBarIndicator(
                     percent: 0.50,

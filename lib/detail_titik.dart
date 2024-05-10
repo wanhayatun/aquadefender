@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kdgaugeview/kdgaugeview.dart';
 import 'package:vertical_percent_indicator/vertical_percent_indicator.dart';
 import 'homepage.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class DetailTitik extends StatelessWidget {
   const DetailTitik({Key? key}) : super(key: key);
@@ -27,7 +27,7 @@ class DetailTitik extends StatelessWidget {
               Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(right: 150),
+                    padding: const EdgeInsets.only(right: 130),
                     child: Row(
                       children: [
                         Image.asset(
@@ -74,26 +74,30 @@ class DetailTitik extends StatelessWidget {
                   Container(
                     width: 280,
                     height: 280,
-                    padding: EdgeInsets.all(15),
-                    child: KdGaugeView(
-                      minSpeed: 0,
-                      maxSpeed: 100,
-                      speed: 70,
-                      animate: true,
-                      duration: Duration(seconds: 3),
-                      alertSpeedArray: [20, 50, 80],
-                      alertColorArray: [
-                        Colors.green,
-                        Colors.orange,
-                        Colors.red
-                      ],
-                      unitOfMeasurement: "m/s2",
-                    ),
+                    child: SfRadialGauge(
+                              axes: <RadialAxis>[
+                                RadialAxis(
+                                  maximum: 100,
+                                  interval: 25,
+                                  pointers: <GaugePointer>[
+                                    NeedlePointer(
+                                      value: 70,
+                                      needleEndWidth: 5,
+                                      )
+                                  ],
+                                  labelsPosition: ElementsPosition.outside,
+                                  ranges: <GaugeRange>[
+                                    GaugeRange(startValue: 0, endValue: 100, color: Colors.blue,)
+                                  ],
+                                  
+                                )
+                              ],
+                              ),
                   ),
                   VerticalBarIndicator(
-                    percent: 0.60,
+                    percent: 0.70,
                     header: 'Ketinggian Air',
-                    footer: '0,60 meter',
+                    footer: '0,70 meter',
                     height: 150,
                     width: 250,
                     color: [
@@ -150,7 +154,7 @@ class DetailTitik extends StatelessWidget {
                             TableCell(
                               child: Padding(
                                 padding: const EdgeInsets.all(1.0),
-                                child: Center(child: Text('0,60 m')),
+                                child: Center(child: Text('0,70 m')),
                               ),
                             ),
                           ],
