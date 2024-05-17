@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:vertical_percent_indicator/vertical_percent_indicator.dart';
 import 'detail_titik.dart';
@@ -12,6 +13,76 @@ class HalamanAliran extends StatefulWidget {
 }
 
 class _HalamanAliranState extends State<HalamanAliran> {
+  double KecepatanAir_A = 0.0;
+  double KecepatanAir_B = 0.0;
+  double ketinggianAir_A = 0.0;
+  double ketinggianAir_B = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    //manggil firebase
+    FirebaseDatabase.instance
+        .ref()
+        .child('kecepatanairA') // Menggunakan '' sebagai kunci
+        .onValue
+        .listen((event) {
+      print('Nilai dari Firebase: ${event.snapshot.value}');
+      // Memeriksa apakah event.snapshot.value tidak null sebelum mengaksesnya
+      if (event.snapshot.value != null) {
+        // Konversi nilai ke tipe data int
+        setState(() {
+          KecepatanAir_A = double.parse(event.snapshot.value.toString());
+        });
+      }
+    });
+
+    FirebaseDatabase.instance
+        .ref()
+        .child('kecepatanairB') // Menggunakan '' sebagai kunci
+        .onValue
+        .listen((event) {
+      print('Nilai dari Firebase: ${event.snapshot.value}');
+      // Memeriksa apakah event.snapshot.value tidak null sebelum mengaksesnya
+      if (event.snapshot.value != null) {
+        // Konversi nilai ke tipe data int
+        setState(() {
+          KecepatanAir_B = double.parse(event.snapshot.value.toString());
+        });
+      }
+    });
+
+    FirebaseDatabase.instance
+        .ref()
+        .child('ketinggianairA') // Menggunakan '' sebagai kunci
+        .onValue
+        .listen((event) {
+      print('Nilai dari Firebase: ${event.snapshot.value}');
+      // Memeriksa apakah event.snapshot.value tidak null sebelum mengaksesnya
+      if (event.snapshot.value != null) {
+        // Konversi nilai ke tipe data int
+        setState(() {
+          ketinggianAir_A = double.parse(event.snapshot.value.toString());
+        });
+      }
+    });
+
+    FirebaseDatabase.instance
+        .ref()
+        .child('ketinggianairB') // Menggunakan '' sebagai kunci
+        .onValue
+        .listen((event) {
+      print('Nilai dari Firebase: ${event.snapshot.value}');
+      // Memeriksa apakah event.snapshot.value tidak null sebelum mengaksesnya
+      if (event.snapshot.value != null) {
+        // Konversi nilai ke tipe data int
+        setState(() {
+          ketinggianAir_B = double.parse(event.snapshot.value.toString());
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,24 +176,26 @@ class _HalamanAliranState extends State<HalamanAliran> {
                             child: SfRadialGauge(
                               axes: <RadialAxis>[
                                 RadialAxis(
-                                  maximum: 100,
-                                  interval: 25,
+                                  maximum: 5,
+                                  interval: 1,
                                   pointers: <GaugePointer>[
                                     NeedlePointer(
-                                      value: 70,
+                                      value: KecepatanAir_A,
                                       needleEndWidth: 5,
-                                      )
+                                    )
                                   ],
                                   labelsPosition: ElementsPosition.outside,
                                   ranges: <GaugeRange>[
-                                    GaugeRange(startValue: 0, endValue: 100, color: Colors.blue,)
+                                    GaugeRange(
+                                      startValue: 0,
+                                      endValue: 100,
+                                      color: Colors.blue,
+                                    )
                                   ],
-                                  
                                 )
                               ],
-                              ),
+                            ),
                           ),
-                        
                         ],
                       ),
                     ),
@@ -158,24 +231,26 @@ class _HalamanAliranState extends State<HalamanAliran> {
                             child: SfRadialGauge(
                               axes: <RadialAxis>[
                                 RadialAxis(
-                                  maximum: 100,
-                                  interval: 25,
+                                  maximum: 5,
+                                  interval: 1,
                                   pointers: <GaugePointer>[
                                     NeedlePointer(
-                                      value: 50,
+                                      value: KecepatanAir_B,
                                       needleEndWidth: 5,
-                                      )
+                                    )
                                   ],
                                   labelsPosition: ElementsPosition.outside,
                                   ranges: <GaugeRange>[
-                                    GaugeRange(startValue: 0, endValue: 100, color: Colors.blue,)
+                                    GaugeRange(
+                                      startValue: 0,
+                                      endValue: 100,
+                                      color: Colors.blue,
+                                    )
                                   ],
-                                  
                                 )
                               ],
-                              ),
+                            ),
                           ),
-      
                         ],
                       ),
                     ),
@@ -185,69 +260,37 @@ class _HalamanAliranState extends State<HalamanAliran> {
             ],
           ),
           Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Expanded(
-              child: VerticalBarIndicator(
-                percent: 0.70,
-                header: 'Ketinggian Air A',
-                footer: '0,70 meter',
-                height: 200,
-                width: 130, // Adjust width as needed
-                color: [
-                  Colors.blue.withOpacity(0.5),
-                  Colors.blue,
-                ],
-                circularRadius: 0,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: VerticalBarIndicator(
+                  percent: ketinggianAir_A / 100,
+                  header: 'Ketinggian Air A',
+                  footer: '$ketinggianAir_A Cm',
+                  height: 200,
+                  width: 130,
+                  color: [
+                    Colors.blue.withOpacity(0.5),
+                    Colors.blue,
+                  ],
+                  circularRadius: 0,
+                ),
               ),
-            ),
-            Expanded(
-              child: VerticalBarIndicator(
-                percent: 0.50,
-                header: 'Ketinggian Air B',
-                footer: '0,50 meter',
-                height: 200,
-                width: 130, // Adjust width as needed
-                color: [
-                  Colors.blue.withOpacity(0.5),
-                  Colors.blue,
-                ],
-                circularRadius: 0,
+              Expanded(
+                child: VerticalBarIndicator(
+                  percent: 40/100,
+                  header: 'Ketinggian Air B',
+                  footer: '$ketinggianAir_B Cm',
+                  height: 200,
+                  width: 130,
+                  color: [
+                    Colors.blue.withOpacity(0.5),
+                    Colors.blue,
+                  ],
+                  circularRadius: 0,
+                ),
               ),
-            ),
-          ],
-        ),
-
-          SizedBox(height: 20),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            child: Table(
-              border: TableBorder.all(),
-              children: [
-                TableRow(
-                  children: [
-                    TableCell(child: Center(child: Text(''))),
-                    TableCell(child: Center(child: Text('A', style: TextStyle(fontWeight: FontWeight.bold)))),
-                    TableCell(child: Center(child: Text('B', style: TextStyle(fontWeight: FontWeight.bold)))),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(child: Center(child: Text('Kecepatan', style: TextStyle(fontWeight: FontWeight.bold)))),
-                    TableCell(child: Center(child: Text('70 m/s2'))),
-                    TableCell(child: Center(child: Text('50 m/s2'))),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(child: Center(child: Text('Ketinggian', style: TextStyle(fontWeight: FontWeight.bold)))),
-                    TableCell(child: Center(child: Text('0.70 m'))),
-                    TableCell(child: Center(child: Text('0.50 m'))),
-                  ],
-                ),
-                // Tambahkan baris tabel sesuai dengan data ketinggian air dari database
-              ],
-            ),
+            ],
           ),
         ],
       ),

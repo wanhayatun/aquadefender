@@ -1,10 +1,48 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:vertical_percent_indicator/vertical_percent_indicator.dart';
 import 'homepage.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-class DetailTitik2 extends StatelessWidget {
+class DetailTitik2 extends StatefulWidget {
   const DetailTitik2({Key? key}) : super(key: key);
+
+  @override
+  _DetailTitik2State createState() => _DetailTitik2State();
+}
+
+class _DetailTitik2State extends State<DetailTitik2> {
+  double kecepatanAirB = 0.0;
+  double ketinggianAirB = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch data from Firebase
+    FirebaseDatabase.instance
+        .ref()
+        .child('kecepatanairB')
+        .onValue
+        .listen((event) {
+      if (event.snapshot.value != null) {
+        setState(() {
+          kecepatanAirB = double.parse(event.snapshot.value.toString());
+        });
+      }
+    });
+
+    FirebaseDatabase.instance
+        .ref()
+        .child('ketinggianairB')
+        .onValue
+        .listen((event) {
+      if (event.snapshot.value != null) {
+        setState(() {
+          ketinggianAirB = double.parse(event.snapshot.value.toString());
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,29 +113,32 @@ class DetailTitik2 extends StatelessWidget {
                     width: 280,
                     height: 280,
                     child: SfRadialGauge(
-                              axes: <RadialAxis>[
-                                RadialAxis(
-                                  maximum: 100,
-                                  interval: 25,
-                                  pointers: <GaugePointer>[
-                                    NeedlePointer(
-                                      value: 50,
-                                      needleEndWidth: 5,
-                                      )
-                                  ],
-                                  labelsPosition: ElementsPosition.outside,
-                                  ranges: <GaugeRange>[
-                                    GaugeRange(startValue: 0, endValue: 100, color: Colors.blue,)
-                                  ],
-                                  
-                                )
-                              ],
-                              ),
+                      axes: <RadialAxis>[
+                        RadialAxis(
+                          maximum: 100,
+                          interval: 25,
+                          pointers: <GaugePointer>[
+                            NeedlePointer(
+                              value: kecepatanAirB,
+                              needleEndWidth: 5,
+                            )
+                          ],
+                          labelsPosition: ElementsPosition.outside,
+                          ranges: <GaugeRange>[
+                            GaugeRange(
+                              startValue: 0,
+                              endValue: 100,
+                              color: Colors.blue,
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                   VerticalBarIndicator(
-                    percent: 0.50,
+                    percent: ketinggianAirB / 100,
                     header: 'Ketinggian Air',
-                    footer: '0,50 meter',
+                    footer: '${ketinggianAirB.toStringAsFixed(2)} cm',
                     height: 150,
                     width: 250,
                     color: [
@@ -107,61 +148,6 @@ class DetailTitik2 extends StatelessWidget {
                     circularRadius: 0,
                   ),
                   SizedBox(height: 20),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.grey),
-                    ),
-                    child: Table(
-                      border: TableBorder.symmetric(
-                        inside: BorderSide.none,
-                      ),
-                      children: [
-                        TableRow(
-                          children: [
-                            TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(1.0),
-                                child: Center(
-                                    child: Text(
-                                  'Kecepatan Aliran',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )),
-                              ),
-                            ),
-                            TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(1.0),
-                                child: Center(child: Text('50 m/s2')),
-                              ),
-                            ),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(1.0),
-                                child: Center(
-                                    child: Text(
-                                  'Ketinggian Air',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )),
-                              ),
-                            ),
-                            TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(1.0),
-                                child: Center(child: Text('0,50 m')),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             ),

@@ -1,10 +1,56 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:vertical_percent_indicator/vertical_percent_indicator.dart';
 import 'homepage.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:fl_chart/fl_chart.dart';
 
-class DetailTitik extends StatelessWidget {
+
+class DetailTitik extends StatefulWidget {
   const DetailTitik({Key? key}) : super(key: key);
+
+  @override
+  _DetailTitikState createState() => _DetailTitikState();
+}
+
+class _DetailTitikState extends State<DetailTitik> {
+  double kecepatanAir_A = 0.0;
+  double ketinggianAir_A = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    //manggil firebase
+    FirebaseDatabase.instance
+        .ref()
+        .child('kecepatanairA') // Menggunakan '' sebagai kunci
+        .onValue
+        .listen((event) {
+      print('Nilai dari Firebase: ${event.snapshot.value}');
+      // Memeriksa apakah event.snapshot.value tidak null sebelum mengaksesnya
+      if (event.snapshot.value != null) {
+        // Konversi nilai ke tipe data double
+        setState(() {
+          kecepatanAir_A = double.parse(event.snapshot.value.toString());
+        });
+      }
+    });
+
+    FirebaseDatabase.instance
+        .ref()
+        .child('ketinggianairA') // Menggunakan '' sebagai kunci
+        .onValue
+        .listen((event) {
+      print('Nilai dari Firebase: ${event.snapshot.value}');
+      // Memeriksa apakah event.snapshot.value tidak null sebelum mengaksesnya
+      if (event.snapshot.value != null) {
+        // Konversi nilai ke tipe data double
+        setState(() {
+          ketinggianAir_A = double.parse(event.snapshot.value.toString());
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,29 +121,33 @@ class DetailTitik extends StatelessWidget {
                     width: 280,
                     height: 280,
                     child: SfRadialGauge(
-                              axes: <RadialAxis>[
-                                RadialAxis(
-                                  maximum: 100,
-                                  interval: 25,
-                                  pointers: <GaugePointer>[
-                                    NeedlePointer(
-                                      value: 70,
-                                      needleEndWidth: 5,
-                                      )
-                                  ],
-                                  labelsPosition: ElementsPosition.outside,
-                                  ranges: <GaugeRange>[
-                                    GaugeRange(startValue: 0, endValue: 100, color: Colors.blue,)
-                                  ],
-                                  
-                                )
-                              ],
-                              ),
+                      axes: <RadialAxis>[
+                        RadialAxis(
+                          maximum: 5,
+                          interval: 1,
+                          pointers: <GaugePointer>[
+                            NeedlePointer(
+                              value: kecepatanAir_A,
+                              needleEndWidth: 5,
+                            )
+                          ],
+                          labelsPosition: ElementsPosition.outside,
+                          ranges: <GaugeRange>[
+                            GaugeRange(
+                              startValue: 0,
+                              endValue: 100,
+                              color: Colors.blue,
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                   VerticalBarIndicator(
-                    percent: 0.70,
-                    header: 'Ketinggian Air',
-                    footer: '0,70 meter',
+                    percent: ketinggianAir_A / 100.0,
+
+                    header: 'Ketinggian Air A',
+                    footer: '$ketinggianAir_A cm',
                     height: 150,
                     width: 250,
                     color: [
@@ -107,61 +157,6 @@ class DetailTitik extends StatelessWidget {
                     circularRadius: 0,
                   ),
                   SizedBox(height: 20),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.grey),
-                    ),
-                    child: Table(
-                      border: TableBorder.symmetric(
-                        inside: BorderSide.none,
-                      ),
-                      children: [
-                        TableRow(
-                          children: [
-                            TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(1.0),
-                                child: Center(
-                                    child: Text(
-                                  'Kecepatan Aliran',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )),
-                              ),
-                            ),
-                            TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(1.0),
-                                child: Center(child: Text('70 m/s2')),
-                              ),
-                            ),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(1.0),
-                                child: Center(
-                                    child: Text(
-                                  'Ketinggian Air',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )),
-                              ),
-                            ),
-                            TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(1.0),
-                                child: Center(child: Text('0,70 m')),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             ),
