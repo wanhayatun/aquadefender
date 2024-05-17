@@ -1,4 +1,5 @@
 // Import library yang dibutuhkan
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'halamanaliran.dart'; // Import halaman selanjutnya
 import 'detail_titik.dart';
@@ -12,10 +13,78 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  TextEditingController _searchController = TextEditingController();
   double topMarkerPosition = 50.0; // Posisi vertikal penanda lokasi atas
   double bottomMarkerPosition = 150.0; // Posisi vertikal penanda lokasi bawah
   double leftMarkerPosition = 100.0; // Posisi horizontal penanda lokasi
+  double KecepatanAir_A = 0.0;
+  double KecepatanAir_B = 0.0;
+  double ketinggianAir_A = 0.0;
+  double ketinggianAir_B = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    //manggil firebase
+    FirebaseDatabase.instance
+        .ref()
+        .child('kecepatanairA') // Menggunakan '' sebagai kunci
+        .onValue
+        .listen((event) {
+      print('Nilai dari Firebase: ${event.snapshot.value}');
+      // Memeriksa apakah event.snapshot.value tidak null sebelum mengaksesnya
+      if (event.snapshot.value != null) {
+        // Konversi nilai ke tipe data int
+        setState(() {
+          KecepatanAir_A = double.parse(event.snapshot.value.toString());
+        });
+      }
+    });
+
+    FirebaseDatabase.instance
+        .ref()
+        .child('kecepatanairB') // Menggunakan '' sebagai kunci
+        .onValue
+        .listen((event) {
+      print('Nilai dari Firebase: ${event.snapshot.value}');
+      // Memeriksa apakah event.snapshot.value tidak null sebelum mengaksesnya
+      if (event.snapshot.value != null) {
+        // Konversi nilai ke tipe data int
+        setState(() {
+          KecepatanAir_B = double.parse(event.snapshot.value.toString());
+        });
+      }
+    });
+
+    FirebaseDatabase.instance
+        .ref()
+        .child('ketinggianairA') // Menggunakan '' sebagai kunci
+        .onValue
+        .listen((event) {
+      print('Nilai dari Firebase: ${event.snapshot.value}');
+      // Memeriksa apakah event.snapshot.value tidak null sebelum mengaksesnya
+      if (event.snapshot.value != null) {
+        // Konversi nilai ke tipe data int
+        setState(() {
+          ketinggianAir_A = double.parse(event.snapshot.value.toString());
+        });
+      }
+    });
+
+    FirebaseDatabase.instance
+        .ref()
+        .child('ketinggianairB') // Menggunakan '' sebagai kunci
+        .onValue
+        .listen((event) {
+      print('Nilai dari Firebase: ${event.snapshot.value}');
+      // Memeriksa apakah event.snapshot.value tidak null sebelum mengaksesnya
+      if (event.snapshot.value != null) {
+        // Konversi nilai ke tipe data int
+        setState(() {
+          ketinggianAir_B = double.parse(event.snapshot.value.toString());
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,44 +96,6 @@ class _HomePageState extends State<HomePage> {
             fit: BoxFit.cover,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-          ),
-          Positioned(
-            top: 50.0,
-            left: 20.0,
-            right: 20.0,
-            child: Container(
-              height: 50.0,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25.0),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 1.0,
-                ),
-              ),
-              child: Row(
-                children: [
-                  SizedBox(width: 10.0), // Spasi di kiri tulisan "Search"
-                  Expanded(
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        hintText: 'Search',
-                        border: InputBorder.none,
-                        suffixIcon: _searchController.text.isNotEmpty
-                            ? GestureDetector(
-                                onTap: () {
-                                  _searchController.clear();
-                                },
-                                child: Icon(Icons.clear),
-                              )
-                            : null,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ),
           // Tombol di sudut kanan bawah untuk navigasi ke halaman selanjutnya
           Positioned(
@@ -125,13 +156,13 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '70 m/s2', // Informasi kecepatan
+                        '$KecepatanAir_A m/s2', // Informasi kecepatan
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
                       Text(
-                        '0.67 m', // Informasi ketinggian air
+                        '$ketinggianAir_A cm', // Informasi ketinggian air
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -142,7 +173,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-// Gambar penanda lokasi bawah (Titik B)
+          // Gambar penanda lokasi bawah (Titik B)
           Positioned(
             bottom: bottomMarkerPosition + 25,
             left: leftMarkerPosition + 169, // Menggeser posisi untuk titik B
@@ -175,13 +206,13 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '50 m/s2', // Informasi kecepatan
+                        '$KecepatanAir_B m/s2', // Informasi kecepatan
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
                       Text(
-                        '0.50 m', // Informasi ketinggian air
+                        '$ketinggianAir_B cm', // Informasi ketinggian air
                         style: TextStyle(
                           color: Colors.white,
                         ),
