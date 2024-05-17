@@ -3,8 +3,8 @@ import 'package:vertical_percent_indicator/vertical_percent_indicator.dart';
 import 'homepage.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-class DetailTitik extends StatelessWidget {
-  const DetailTitik({Key? key}) : super(key: key);
+class DetailTitik2 extends StatelessWidget {
+  const DetailTitik2({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class DetailTitik extends StatelessWidget {
                           children: [
                             SizedBox(height: 25),
                             Text(
-                              'Titik A',
+                              'Titik B',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -81,7 +81,7 @@ class DetailTitik extends StatelessWidget {
                                   interval: 25,
                                   pointers: <GaugePointer>[
                                     NeedlePointer(
-                                      value: 70,
+                                      value: 50,
                                       needleEndWidth: 5,
                                       )
                                   ],
@@ -95,9 +95,9 @@ class DetailTitik extends StatelessWidget {
                               ),
                   ),
                   VerticalBarIndicator(
-                    percent: 0.70,
+                    percent: 0.50,
                     header: 'Ketinggian Air',
-                    footer: '0,70 meter',
+                    footer: '0,50 meter',
                     height: 150,
                     width: 250,
                     color: [
@@ -134,7 +134,7 @@ class DetailTitik extends StatelessWidget {
                             TableCell(
                               child: Padding(
                                 padding: const EdgeInsets.all(1.0),
-                                child: Center(child: Text('70 m/s2')),
+                                child: Center(child: Text('50 m/s2')),
                               ),
                             ),
                           ],
@@ -154,7 +154,7 @@ class DetailTitik extends StatelessWidget {
                             TableCell(
                               child: Padding(
                                 padding: const EdgeInsets.all(1.0),
-                                child: Center(child: Text('0,70 m')),
+                                child: Center(child: Text('0,50 m')),
                               ),
                             ),
                           ],

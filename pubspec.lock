@@ -75,6 +75,22 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.19.0"
+  kdgaugeview:
+    dependency: "direct main"
+    description:
+      name: kdgaugeview
+      sha256: "8a13b8bc5e86b83c3fe26b26bf0056ab875f546db770f8f8f4baf8437c993551"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   leak_tracker:
     dependency: transitive
     description:
@@ -176,6 +192,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  syncfusion_flutter_core:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_core
+      sha256: "7666506885ebc8f62bb928ad4588a73e20caaff2b2cf2b2b56f67d98f4113525"
+      url: "https://pub.dev"
+    source: hosted
+    version: "24.2.9"
+  syncfusion_flutter_gauges:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_gauges
+      sha256: "87be13e520fc1676a725691446f411f549ea5b6ff2580234db0479799f213757"
+      url: "https://pub.dev"
+    source: hosted
+    version: "24.2.9"
   term_glyph:
     dependency: transitive
     description:
@@ -200,6 +232,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  vertical_percent_indicator:
+    dependency: "direct main"
+    description:
+      name: vertical_percent_indicator
+      sha256: "352b07661537aac8003e4377bd4b9a1aeb7fb63391bafecb2bd70d13efbfc82c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   vm_service:
     dependency: transitive
     description:
@@ -209,4 +249,5 @@ packages:
     source: hosted
     version: "13.0.0"
 sdks:
-  dart: ">=3.3.3 <4.0.0"
+  dart: ">=3.3.2 <4.0.0"
+  flutter: ">=1.17.0"
